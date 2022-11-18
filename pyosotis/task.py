@@ -1,8 +1,14 @@
+import logging
+
+logger = logging.getLogger(__name__)
+
+
 class Task:
     def __init__(self, task_name, task_proc):
         self.name = task_name
         self.proc = task_proc
         self.data = task_proc()
+        logger.debug(f"Task({task_name}) created.")
 
     def __str__(self):
         return f"Task name: {self.name}"
