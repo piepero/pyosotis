@@ -3,14 +3,14 @@
 
 ## About the project
 
-⚠ This is a prototype and work in progress.
+⚠ This is a prototype and work in progress._
 
 The goal of the project is to create a framework for building "interactive asynchronous to do lists" which can lead the user through complex processes requiring multiple sequential or parallel steps.
 Those steps can be either performed automatically or by the user.
 
-By allowing parallel execution of due tasks and handling task completion requirements, an optimized  
+Parallel execution of due tasks will minimize the required time to finish all tasks, while the interactive prompting will ensure that no manual steps are forgotten or executed prematurely.
 
-An example: A manual software release process might contain the following tasks:
+An example: A (simplified) manual software release process might contain the following tasks:
 - T1: clone main project
 - T2: clone helper projects
 - T3: update readme in main project
