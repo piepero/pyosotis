@@ -3,12 +3,13 @@
 
 ## About the project
 
-⚠ This is a prototype and work in progress._
+_⚠ This is a prototype and work in progress._  
+_⚠ current status: usable for purely manual to do lists_
 
-The goal of the project is to create a framework for building "interactive asynchronous to do lists" which can lead the user through complex processes requiring multiple sequential or parallel steps.
+Pyosotis is (intended to be) a framework for building "interactive asynchronous to do lists" (or checklists) which can lead the user through complex processes requiring multiple sequential or parallel steps.
 Those steps can be either performed automatically or by the user.
 
-Parallel execution of due tasks will minimize the required time to finish all tasks, while the interactive prompting will ensure that no manual steps are forgotten or executed prematurely.
+Parallel display and execution of due tasks will minimize the required time to finish all tasks, while the interactive GUI will ensure that no manual steps are forgotten or executed prematurely.
 
 An example: A (simplified) manual software release process might contain the following tasks:
 - T1: clone main project
@@ -35,6 +36,6 @@ Starting the pyosotis task runner should:
 
 ## Examples
 
-_```sample_tasks.py```_ contains a bunch of sample tasks with various dependencies.
+_```sample_tasks.py```_ contains a bunch of (purely manual) sample tasks with various dependencies.
 
-_```sample_runner.py```_ creates a task runner based on _```sample_tasks.py```_.
+_```sample_runner.py```_ creates a task runner based on _```sample_tasks.py```_ and starts a simple _tkinter_ GUI leading the user through all the items on the task list.

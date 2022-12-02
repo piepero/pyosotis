@@ -20,3 +20,7 @@ class Task:
             if not req.__name__ in finished_task_names:
                 return False
         return True
+
+    @property
+    def message(self):
+        return self.data["message"]

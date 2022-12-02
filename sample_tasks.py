@@ -33,27 +33,20 @@ def task_upload():
 
 def task_push():
     return {
-        "message": "upload release files",
+        "message": "push changes to repositories",
         "requires": [task_build],
     }
 
 
-def task_alte_inaktiv():
+def task_mark_old():
     return {
-        "message": "alte Downloads inaktiv setzen",
+        "message": "mark old releases as obsolete",
         "requires": [task_upload],
     }
 
 
-def task_push_release_erstellen():
+def task_send_notofications():
     return {
-        "message": "interne Mail mit Infos zum neuen Release",
-        "requires": [task_alte_inaktiv],
-    }
-
-
-def task_send_mail():
-    return {
-        "message": "interne Mail mit Infos zum neuen Release",
-        "requires": [task_alte_inaktiv],
+        "message": "send notifications about new release",
+        "requires": [task_mark_old],
     }
