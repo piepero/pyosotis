@@ -43,6 +43,6 @@ Starting the pyosotis task runner should:
 
 _```sample_runner.py```_ creates a task runner based on _```sample_tasks.py```_ and starts a simple _tkinter_ GUI leading the user through all the manual items on the task list.
 
-_```sample_tasks.py```_ contains a bunch of (purely manual) sample tasks with various dependencies. Used by _```sample_runner.py```_.
+_```sample_tasks.py```_ contains a bunch of sample tasks with various dependencies. Used by _```sample_runner.py```_.
 
 _```sample_dummies.py```_ defines dummy procedures, emulating simple automatic tasks for use in _```sample_tasks.py```_.
