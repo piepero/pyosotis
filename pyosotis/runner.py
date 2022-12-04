@@ -26,18 +26,47 @@ class Runner:
         logger.debug(f"{len(self.tasks)} Tasks found.")
 
     def update_tasks(self):
+        """Update the status of all tasks."""
+
+        # check running_tasks for completions
+        for task in self.running_tasks:
+            if not task.thread.is_alive():
+                logger.debug(f"thread of task {task.name} has finished")
+                self.finished_tasks.append(task)
+                self.running_tasks.remove(task)
+
         finished_task_names = [task.name for task in self.finished_tasks]
 
+        # all due tasks which are manual (i.e. without run command)
         self.due_tasks = [
             task
             for task in self.tasks
-            if task.is_due(finished_task_names) and not task in self.finished_tasks
+            if task.is_due(finished_task_names)
+            and not task.data.get("run", None)
+            and not task in self.finished_tasks
+            and not task in self.running_tasks
         ]
+
+        # all waiting tasks (i.e. unfinished and not yet due)
         self.waiting_tasks = [
             task
             for task in self.tasks
             if not task.is_due(finished_task_names) and not task in self.finished_tasks
         ]
+
+        # start threads for all due tasks with run command and append to running_tasks
+        for task in [
+            task
+            for task in self.tasks
+            if task.is_due(finished_task_names)
+            and task.data.get("run", None)
+            and not task in self.finished_tasks
+            and not task in self.running_tasks
+        ]:
+            logger.debug(f"Starting thread for {task.name}")
+            task.thread = threading.Thread(target=task.data["run"])
+            task.thread.start()
+            self.running_tasks.append(task)
 
     def task_names(self):
         return [task.name for task in self.tasks]

@@ -3,8 +3,8 @@
 
 ## About the project
 
-_⚠ This is a prototype and work in progress._  
-_⚠ current status: usable for purely manual to do lists_
+_⚠ This is a (working) prototype and work in progress._  
+_⚠ current status: usable for manual to do lists and automatic processes that need no arguments to run_
 
 Pyosotis is (intended to be) a framework for building "interactive asynchronous to do lists" (or checklists) which can lead the user through complex processes requiring multiple sequential or parallel steps.
 Those steps can be either performed automatically or by the user.
@@ -34,8 +34,15 @@ Starting the pyosotis task runner should:
 - run T5 as soon as T3 and T4 are finished
 - and finally prompt the user to perform T6 once T5 is done
 
-## Examples
+## Example
 
-_```sample_tasks.py```_ contains a bunch of (purely manual) sample tasks with various dependencies.
+```shell
+> py ./sample_runner.py
+```
+## Example files
 
-_```sample_runner.py```_ creates a task runner based on _```sample_tasks.py```_ and starts a simple _tkinter_ GUI leading the user through all the items on the task list.
+_```sample_runner.py```_ creates a task runner based on _```sample_tasks.py```_ and starts a simple _tkinter_ GUI leading the user through all the manual items on the task list.
+
+_```sample_tasks.py```_ contains a bunch of (purely manual) sample tasks with various dependencies. Used by _```sample_runner.py```_.
+
+_```sample_dummies.py```_ defines dummy procedures, emulating simple automatic tasks for use in _```sample_tasks.py```_.

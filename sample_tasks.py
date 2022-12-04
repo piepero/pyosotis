@@ -1,6 +1,10 @@
+from sample_dummies import clone_main, clone_remaining
+
+
 def task_clone_main():
     return {
         "message": "clone main repositories",
+        "run": clone_main,
     }
 
 
@@ -14,6 +18,7 @@ def task_set_version():
 def task_clone_remaining():
     return {
         "message": "clone remaining repositories",
+        "run": clone_remaining,
     }
 
 
