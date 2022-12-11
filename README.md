@@ -3,10 +3,10 @@
 
 ## About the project
 
-_⚠ This is a (working) prototype and work in progress._  
-_⚠ current status: usable for manual to do lists and automatic processes that need no arguments to run_
+_⚠ This project is work in progress._  
+_⚠ current status: fully usable, though somewhat lacking in features._
 
-Pyosotis is (intended to be) a framework for building "interactive asynchronous to do lists" (or checklists) which can lead the user through complex processes requiring multiple sequential or parallel steps.
+Pyosotis is a simple framework for building "interactive asynchronous to do lists" (or checklists) which can lead the user through complex processes requiring multiple sequential or parallel steps.
 Those steps can be either performed automatically or by the user.
 
 Parallel display and execution of due tasks will minimize the required time to finish all tasks, while the interactive GUI will ensure that no manual steps are forgotten or executed prematurely.
@@ -46,3 +46,64 @@ _```sample_runner.py```_ creates a task runner based on _```sample_tasks.py```_ 
 _```sample_tasks.py```_ contains a bunch of sample tasks with various dependencies. Used by _```sample_runner.py```_.
 
 _```sample_dummies.py```_ defines dummy procedures, emulating simple automatic tasks for use in _```sample_tasks.py```_.
+
+
+## Documentation (quite rudimentary)
+
+### Creating tasks
+
+For working examples, see _```sample_tasks.py```_.
+
+A fully featured task could look something like this:
+```python
+def task_do_something():
+    return {
+        "message": "This is currently both title and message text",
+        "requires": [task_one, task_two],
+        "run": some_python_function,
+    }
+```
+
+It is defined as a function. The function name doubles as unique task ID. If other tasks need to refer to this task (for example by referencing it in ```"requires"```), they will have to use the full function name __task_do_something__ to do so.
+
+The function returns a dictionary describing the task and its behaviour.
+
+```"message"``` is the only required key. Currently this is only used as the titel by which the task is represented in the GUI. For automatic tasks, the message should describe in one line what the task does. For manual tasks, it should describe - again in one line - what the user is supposed to do.
+
+```"requires"``` is optional. This is the most important key for Pyosotis' functionality. If a task has a list of other required tasks, it will only become due, when all tasks in "requires" have been previously completed. In this example, __task_do_something__ will not be considered _due_, unless __task_one__ and __task_two__ have been completed.
+
+```"run"``` is optional, as well. It marks an automatic task. The value of run has to be a python function. For details, see "using functions" below.
+
+### Using functions
+
+For working examples, see _```sample_dummies.py```_.
+
+```python
+def create_file_in_workdir(SharedDict: dict):
+    """Creates a tempory file in the workdir."""
+    workdir = SharedDict['workdir']
+
+    temp_path = os.path.join(workdir, 'my_file.txt')
+    with open(temp_path, 'w') as fout:
+        fout.write('This is a file in workdir.')
+    
+    SharedDict['my_filename'] = temp_path
+```
+
+The functions called by the task's "run" key are simple Python functions with a single parameter, which is a dictionary passed to each function by the task runner.
+
+The functions use this dictionary to access and also to return data. Since the task functions run in threads, race conditions and similar inconveniences may occur! However, this is not expected to be much of a problem in practice, since Pyosotis is mainly intended for fairly linear processes in which later tasks mostly only read data provided by earlier tasks and add their own keys to the dictionary.
+## Future enhancements
+### Planned enhancements
+
+- [ ] split task "message" in "title" (a single line title) and an optional multiline "message" describing the task in detail (ideally as markdown); adapt the GUI accordingly.
+- [ ] show currently running automatic tasks in GUI
+
+### Considered enhancements
+
+Ideas for optional improvements.
+
+- [ ] automatically store return value of automated tasks in a defined location and make it accessible by other tasks. See [stackoverflow](https://stackoverflow.com/questions/6893968/how-to-get-the-return-value-from-a-thread) for inspiration.
+- [ ] change value of "run" to be a list/tuple/set of multiple functions instead of just one.
+- [ ] allow tasks to pass arguments to the function (or functions) called in "run".
+- [ ] provide a locking mechanism for SharedDict. Currently, only atomic operations are thread safe. Possibly the ThreadSafeDict from [this stackoverflow thread](https://stackoverflow.com/questions/1312331/using-a-global-dictionary-with-threads-in-python).

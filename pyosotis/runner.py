@@ -15,6 +15,8 @@ class Runner:
     waiting_tasks = []
     finished_tasks = []
 
+    SharedDict = dict()
+
     def __init__(self, task_module):
         logger.debug("Runner(task_module.__name__):")
         self.task_module_name = task_module.__name__
@@ -64,7 +66,9 @@ class Runner:
             and not task in self.running_tasks
         ]:
             logger.debug(f"Starting thread for {task.name}")
-            task.thread = threading.Thread(target=task.data["run"])
+            task.thread = threading.Thread(
+                target=task.data["run"], args=(self.SharedDict,)
+            )
             task.thread.start()
             self.running_tasks.append(task)
 

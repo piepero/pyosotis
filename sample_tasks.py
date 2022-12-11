@@ -1,10 +1,18 @@
-from sample_dummies import clone_main, clone_remaining
+from sample_dummies import clone_auxillary, clone_main, create_project_name
+
+
+def task_choose_project_name():
+    return {
+        "message": "choose project name",
+        "run": create_project_name,
+    }
 
 
 def task_clone_main():
     return {
         "message": "clone main repositories",
         "run": clone_main,
+        "requires": [task_choose_project_name],
     }
 
 
@@ -15,17 +23,18 @@ def task_set_version():
     }
 
 
-def task_clone_remaining():
+def task_clone_auxillary():
     return {
-        "message": "clone remaining repositories",
-        "run": clone_remaining,
+        "message": "clone auxillary repositories",
+        "run": clone_auxillary,
+        "requires": [task_choose_project_name],
     }
 
 
 def task_build():
     return {
         "message": "build binaries",
-        "requires": [task_set_version, task_clone_remaining],
+        "requires": [task_set_version, task_clone_auxillary],
     }
 
 
