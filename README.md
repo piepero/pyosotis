@@ -6,7 +6,7 @@
 _⚠ This project is work in progress._  
 _⚠ current status: fully usable, though somewhat lacking in features._
 
-Pyosotis is a simple framework for building "interactive asynchronous to do lists" (or checklists) which can lead the user through complex processes requiring multiple sequential or parallel steps.
+Pyosotis is a framework for building "interactive asynchronous to do lists" (or checklists) which guide the user through complex processes requiring multiple sequential or parallel steps.
 Those steps can be either performed automatically or by the user.
 
 Parallel display and execution of due tasks will minimize the required time to finish all tasks, while the interactive GUI will ensure that no manual steps are forgotten or executed prematurely.
@@ -64,7 +64,8 @@ def task_do_something():
     }
 ```
 
-It is defined as a function. The function name doubles as unique task ID. If other tasks need to refer to this task (for example by referencing it in ```"requires"```), they will have to use the full function name __task_do_something__ to do so.
+Tasks are defined as functions.  
+The function name doubles as unique task ID. If other tasks refer to the task (for example by referencing it in ```"requires"```), they have to use the full function name __task_do_something__.
 
 The function returns a dictionary describing the task and its behaviour.
 
@@ -96,8 +97,9 @@ The functions use this dictionary to access and also to return data. Since the t
 ## Future enhancements
 ### Planned enhancements
 
-- [ ] split task "message" in "title" (a single line title) and an optional multiline "message" describing the task in detail (ideally as markdown); adapt the GUI accordingly.
 - [ ] show currently running automatic tasks in GUI
+- [ ] show a message when all tasks are complete
+- [ ] split task "message" in "title" (a single line title) and an optional multiline "message" describing the task in detail (ideally as markdown); adapt the GUI accordingly.
 
 ### Considered enhancements
 
