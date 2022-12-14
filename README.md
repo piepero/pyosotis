@@ -99,7 +99,8 @@ The functions use this dictionary to access and also to return data. Since the t
 
 - [ ] show currently running automatic tasks in GUI
 - [ ] show a message when all tasks are complete
-- [ ] split task "message" in "title" (a single line title) and an optional multiline "message" describing the task in detail (ideally as markdown); adapt the GUI accordingly.
+- [ ] split task "message" in "title" (a single line title) and an optional multiline "message" describing the task in detail (ideally as markdown [[markdown]](https://pypi.org/project/Markdown/)[[css]](https://markdowncss.github.io/)); adapt the GUI accordingly.
+- [ ] Use a nice tkinter theme [[Reddit]](https://www.reddit.com/r/Python/comments/lps11c/how_to_make_tkinter_look_modern_how_to_use_themes/)
 
 ### Considered enhancements
 
@@ -109,3 +110,4 @@ Ideas for optional improvements.
 - [ ] change value of "run" to be a list/tuple/set of multiple functions instead of just one.
 - [ ] allow tasks to pass arguments to the function (or functions) called in "run".
 - [ ] provide a locking mechanism for SharedDict. Currently, only atomic operations are thread safe. Possibly the ThreadSafeDict from [this stackoverflow thread](https://stackoverflow.com/questions/1312331/using-a-global-dictionary-with-threads-in-python).
+- [ ] visualize the task structure with [schemdraw](https://SchemDraw.readthedocs.io/en/latest/)
