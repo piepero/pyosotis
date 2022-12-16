@@ -29,8 +29,12 @@ class PyosotisGui:
         tk_root.title("Pyosotis")
 
         self.mainframe = ttk.Frame(tk_root, padding="3 3 12 12")
+        self.mainframe.grid(row=0, column=0, sticky="nsew")
 
-        self.place_gui_components(tk_root)
+        tk_root.rowconfigure(0, weight=1)
+        tk_root.columnconfigure(0, weight=1)
+
+        self.place_gui_components(self.mainframe)
         self.update_gui()
 
     def place_gui_components(self, tk_root):
@@ -51,7 +55,6 @@ class PyosotisGui:
             lb_choices = StringVar()
             lb = Listbox(lf, listvariable=lb_choices, selectmode="single")
             lb.pack(side="top", fill="both", expand=True)
-            lf.pack(side="top", fill="both", expand=True)
 
             return TaskBlock(
                 labelframe=lf, button=btn, listbox=lb, listbox_choices=lb_choices
@@ -66,10 +69,21 @@ class PyosotisGui:
         self.tb_waiting = _place_task_block("Waiting tasks")
         self.tb_finished = _place_task_block("Finished tasks")
 
-        tk.Label(text="Info").pack()
+        self.tb_due.labelframe.grid(row=0, column=0, stick="nsew")
+        self.tb_running.labelframe.grid(row=0, column=1, stick="nsew")
+        self.tb_waiting.labelframe.grid(row=1, column=0, stick="nsew")
+        self.tb_finished.labelframe.grid(row=1, column=1, stick="nsew")
 
-        self.tx_messages = tk.Text(tk_root)
-        self.tx_messages.pack(side="top", fill="both", expand=True)
+        lf = ttk.LabelFrame(tk_root, text="Info")
+        self.tx_messages = tk.Text(lf)
+        self.tx_messages.pack(side="top", fill="both")
+        lf.grid(row=2, column=0, columnspan=2, stick="nsew")
+
+        (cols, rows) = tk_root.grid_size()
+        for r in range(rows):
+            tk_root.rowconfigure(r, weight=1)
+        for c in range(cols):
+            tk_root.columnconfigure(c, weight=1)
 
     def update_gui(self) -> None:
         global close_requested
