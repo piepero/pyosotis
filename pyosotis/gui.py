@@ -5,7 +5,9 @@ from tkinter import Listbox, StringVar, ttk
 
 from .runner import Runner
 
-TaskBlock = namedtuple("TaskBlock", ["label", "listbox", "listbox_choices"])
+TaskBlock = namedtuple(
+    "TaskBlock", ["labelframe", "button", "listbox", "listbox_choices"]
+)
 
 logger = logging.getLogger(__name__)
 
@@ -32,25 +34,35 @@ class PyosotisGui:
         self.update_gui()
 
     def place_gui_components(self, tk_root):
-        def _place_task_block(label_text):
+        def _place_task_block(label_text, button_text=None, button_command=None):
             """Create a consecutive block of a text label, a listbox and the listbox choices
             and return a TaskBlock with references to the new items."""
-            label = ttk.Label(tk_root, text=label_text).pack(
-                side="top", fill="both", expand=True
-            )
+            lf = ttk.LabelFrame(tk_root, text=label_text)
+
+            btn = None
+            if button_text and button_command:
+                btn = ttk.Button(
+                    lf,
+                    text=label_text,
+                    command=button_command,
+                )
+                btn.pack(side="top", fill="both", expand=True)
 
             lb_choices = StringVar()
-            lb = Listbox(tk_root, listvariable=lb_choices, selectmode="multiple")
+            lb = Listbox(lf, listvariable=lb_choices, selectmode="single")
             lb.pack(side="top", fill="both", expand=True)
+            lf.pack(side="top", fill="both", expand=True)
 
-            return TaskBlock(label=label, listbox=lb, listbox_choices=lb_choices)
+            return TaskBlock(
+                labelframe=lf, button=btn, listbox=lb, listbox_choices=lb_choices
+            )
 
-        ttk.Button(
-            tk_root, text="Mark selected task as done", command=self.btn_due_done
-        ).pack()
-
-        self.tb_due = _place_task_block("Currently due tasks")
-        self.tb_running = _place_task_block("Running automatic tasks")
+        self.tb_due = _place_task_block(
+            "Currently due manual tasks",
+            "Mark selected task as done",
+            self.btn_due_done,
+        )
+        self.tb_running = _place_task_block("Currently running automatic tasks")
         self.tb_waiting = _place_task_block("Waiting tasks")
         self.tb_finished = _place_task_block("Finished tasks")
 
