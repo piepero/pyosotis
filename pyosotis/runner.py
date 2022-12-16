@@ -90,6 +90,9 @@ class Runner:
     def waiting_task_titles(self):
         return [task.title for task in self.waiting_tasks]
 
+    def running_task_titles(self):
+        return [task.title for task in self.running_tasks]
+
     def finished_task_descriptions(self):
         return [task.description for task in self.finished_tasks]
 

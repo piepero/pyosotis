@@ -4,7 +4,12 @@
   A sample work process with both automatic and manual tasks.
 """
 
-from sample_dummies import clone_auxillary, clone_main, create_project_name
+from sample_dummies import (
+    build_binaries,
+    clone_auxillary,
+    clone_main,
+    create_project_name,
+)
 
 
 def task_generate_project_name():
@@ -44,8 +49,8 @@ def task_clone_auxillary():
 def task_build():
     return {
         "title": "build binaries",
-        "description": "Manually build binaries, as the automation is currently broken.",
-        # "run": build_binaries
+        "description": "Build binaries from source.",
+        "run": build_binaries,
         "requires": [task_set_version, task_clone_auxillary],
     }
 
