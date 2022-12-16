@@ -1,66 +1,82 @@
+"""
+  sample_tasks.py
+
+  A sample work process with both automatic and manual tasks.
+"""
+
 from sample_dummies import clone_auxillary, clone_main, create_project_name
 
 
-def task_choose_project_name():
+def task_generate_project_name():
     return {
-        "message": "choose project name",
+        "title": "generate project name",
+        "description": "Generates a random project name.",
         "run": create_project_name,
     }
 
 
 def task_clone_main():
     return {
-        "message": "clone main repositories",
+        "title": "clone main repositories",
+        "description": "Clones the main project repositories.",
         "run": clone_main,
-        "requires": [task_choose_project_name],
+        "requires": [task_generate_project_name],
     }
 
 
 def task_set_version():
     return {
-        "message": "set release version in source",
+        "title": "set release version in source",
+        "description": "Manually update the code in the main repositories to reflect the new release version.",
         "requires": [task_clone_main],
     }
 
 
 def task_clone_auxillary():
     return {
-        "message": "clone auxillary repositories",
+        "title": "clone auxillary repositories",
+        "description": "Clones auxillary repositories needed for the project.",
         "run": clone_auxillary,
-        "requires": [task_choose_project_name],
+        "requires": [task_generate_project_name],
     }
 
 
 def task_build():
     return {
-        "message": "build binaries",
+        "title": "build binaries",
+        "description": "Manually build binaries, as the automation is currently broken.",
+        # "run": build_binaries
         "requires": [task_set_version, task_clone_auxillary],
     }
 
 
 def task_upload():
     return {
-        "message": "upload release files",
+        "title": "upload release files",
+        "description": "Manually upload the release files.",
         "requires": [task_build],
     }
 
 
 def task_push():
     return {
-        "message": "push changes to repositories",
+        "title": "push changes to repositories",
+        "description": "Manually push the changes to the respective repositories.",
         "requires": [task_build],
     }
 
 
 def task_mark_old():
     return {
-        "message": "mark old releases as obsolete",
+        "title": "mark old releases as obsolete",
+        "description": "Manually deactivate the downloads of old releases and mark them as obsolete.",
         "requires": [task_upload],
     }
 
 
-def task_send_notofications():
+def task_send_notifications():
     return {
-        "message": "send notifications about new release",
+        "title": "send notifications about new release",
+        "description": "Manually send a bunch of notifications about the new release (E-Mail, Mastodon, WhatsApp, ...).",
         "requires": [task_mark_old],
     }

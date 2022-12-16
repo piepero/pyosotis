@@ -3,8 +3,8 @@
 
 ## About the project
 
-_⚠ This project is work in progress._  
-_⚠ current status: fully usable, though somewhat lacking in features._
+_⚠ This project is work in progress. Expect changes to names, keys and functionality._  
+_⚠ Current status: fully usable, though somewhat lacking in features._
 
 Pyosotis is a framework for building "interactive asynchronous to do lists" (or checklists) which guide the user through complex processes requiring multiple sequential or parallel steps.
 Those steps can be either performed automatically or by the user.
@@ -58,7 +58,8 @@ A fully featured task could look something like this:
 ```python
 def task_do_something():
     return {
-        "message": "This is currently both title and message text",
+        "title": "This is the title of the task",
+        "description": "This is a longer description of the task.\nIt can contain mutltiple lines.",
         "requires": [task_one, task_two],
         "run": some_python_function,
     }
@@ -69,11 +70,13 @@ The function name doubles as unique task ID. If other tasks refer to the task (f
 
 The function returns a dictionary describing the task and its behaviour.
 
-```"message"``` is the only required key. Currently this is only used as the titel by which the task is represented in the GUI. For automatic tasks, the message should describe in one line what the task does. For manual tasks, it should describe - again in one line - what the user is supposed to do.
+```"title"``` is the only required key. This is the titel by which the task is represented in the GUI. The title should describe in one line what the task does.
+
+```"description"``` is optional. Use this key to store a longer description of the task. For manual tasks, the description could provide info on the necessary steps to complete the task. The description can contain line breaks.
 
 ```"requires"``` is optional. This is the most important key for Pyosotis' functionality. If a task has a list of other required tasks, it will only become due, when all tasks in "requires" have been previously completed. In this example, __task_do_something__ will not be considered _due_, unless __task_one__ and __task_two__ have been completed.
 
-```"run"``` is optional, as well. It marks an automatic task. The value of run has to be a python function. For details, see "using functions" below.
+```"run"``` is optional, as well. It marks an automatic task. The value of run has to be a python function. For details, see "using functions" below. The pyosotis task runner will automatically start this function in a thread. See "Using functions" below for more details.
 
 ### Using functions
 
@@ -99,7 +102,7 @@ The functions use this dictionary to access and also to return data. Since the t
 
 - [ ] show currently running automatic tasks in GUI
 - [ ] show a message when all tasks are complete
-- [ ] split task "message" in "title" (a single line title) and an optional multiline "message" describing the task in detail (ideally as markdown [[markdown]](https://pypi.org/project/Markdown/)[[css]](https://markdowncss.github.io/)); adapt the GUI accordingly.
+- [ ] GUI: render task desription as markdown (see [[markdown]](https://pypi.org/project/Markdown/)[[css]](https://markdowncss.github.io/))
 - [ ] Use a nice tkinter theme [[Reddit]](https://www.reddit.com/r/Python/comments/lps11c/how_to_make_tkinter_look_modern_how_to_use_themes/)
 
 ### Considered enhancements

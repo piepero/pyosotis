@@ -78,14 +78,23 @@ class Runner:
     def due_task_names(self):
         return [task.name for task in self.due_tasks]
 
-    def due_task_messages(self):
-        return [task.message for task in self.due_tasks]
+    def due_task_descriptions(self):
+        return [task.description for task in self.due_tasks]
 
-    def waiting_task_messages(self):
-        return [task.message for task in self.waiting_tasks]
+    def due_task_titles(self):
+        return [task.title for task in self.due_tasks]
 
-    def finished_task_messages(self):
-        return [task.message for task in self.finished_tasks]
+    def waiting_task_descriptions(self):
+        return [task.description for task in self.waiting_tasks]
+
+    def waiting_task_titles(self):
+        return [task.title for task in self.waiting_tasks]
+
+    def finished_task_descriptions(self):
+        return [task.description for task in self.finished_tasks]
+
+    def finished_task_titles(self):
+        return [task.title for task in self.finished_tasks]
 
     def finish_due_task(self, due_task_index: int) -> None:
         self.set_finished(self.due_tasks[due_task_index])

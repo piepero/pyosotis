@@ -33,7 +33,7 @@ class PyosotisGui:
             side="top", fill="both", expand=True
         )
 
-        self.lb_due_choices = StringVar(value=runner.due_task_messages())
+        self.lb_due_choices = StringVar(value=runner.due_task_titles())
         self.lb_due = Listbox(
             tk_root, listvariable=self.lb_due_choices, selectmode="multiple"
         )
@@ -41,7 +41,7 @@ class PyosotisGui:
 
         tk.Label(text="Waiting tasks").pack(side="top", fill="both", expand=True)
 
-        self.lb_waiting_choices = StringVar(value=runner.waiting_task_messages())
+        self.lb_waiting_choices = StringVar(value=runner.waiting_task_titles())
         self.lb_waiting = Listbox(
             tk_root,
             listvariable=self.lb_waiting_choices,
@@ -52,7 +52,7 @@ class PyosotisGui:
 
         tk.Label(text="Finished tasks").pack(side="top", fill="both", expand=True)
 
-        self.lb_finished_choices = StringVar(value=runner.finished_task_messages())
+        self.lb_finished_choices = StringVar(value=runner.finished_task_titles())
         self.lb_finished = Listbox(
             tk_root,
             listvariable=self.lb_finished_choices,
@@ -73,9 +73,9 @@ class PyosotisGui:
             self.tk_root.destroy()
             exit
         self.runner.update_tasks()
-        self.lb_due_choices.set(self.runner.due_task_messages())
-        self.lb_waiting_choices.set(self.runner.waiting_task_messages())
-        self.lb_finished_choices.set(self.runner.finished_task_messages())
+        self.lb_due_choices.set(self.runner.due_task_titles())
+        self.lb_waiting_choices.set(self.runner.waiting_task_titles())
+        self.lb_finished_choices.set(self.runner.finished_task_titles())
         self.tk_root.after(1000, self.update_gui)
 
     def btn_due_done(self, *args):

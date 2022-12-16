@@ -22,5 +22,9 @@ class Task:
         return True
 
     @property
-    def message(self):
-        return self.data["message"]
+    def title(self):
+        return self.data["title"]
+
+    @property
+    def description(self):
+        return self.data["description"]
