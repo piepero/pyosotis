@@ -47,7 +47,7 @@ class PyosotisGui:
             if button_text and button_command:
                 btn = ttk.Button(
                     lf,
-                    text=label_text,
+                    text=button_text,
                     command=button_command,
                 )
                 btn.pack(side="top", fill="both", expand=True)
