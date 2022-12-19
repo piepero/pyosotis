@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 # key constants for the shared dictionary
 PROJECT_NAME = "project_name"
 REPOSITORIES = "repositories"
+USERNAME = "username"
 
 
 def clone_main(SharedDict: dict):
@@ -50,7 +51,11 @@ def create_project_name(SharedDict: dict):
     colors = ("Red", "Green", "Blue", "Violet", "Black", "White")
     shapes = ("Circle", "Square", "Triangle", "Rectangle")
 
-    SharedDict["project_name"] = random.choice(colors) + random.choice(shapes)
+    project_name = random.choice(colors) + random.choice(shapes)
+    if USERNAME in SharedDict:
+        project_name += f" by {SharedDict[USERNAME]}"
+
+    SharedDict[PROJECT_NAME] = project_name
 
     logger.info(
         f"create_project_name: The project is called {SharedDict[PROJECT_NAME]}"

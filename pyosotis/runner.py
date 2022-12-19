@@ -17,7 +17,7 @@ class Runner:
 
     SharedDict = dict()
 
-    def __init__(self, task_module):
+    def __init__(self, task_module, shared_dict=None):
         logger.debug("Runner(task_module.__name__):")
         self.task_module_name = task_module.__name__
         self.tasks = [
@@ -26,6 +26,8 @@ class Runner:
             if item.startswith("task_")
         ]
         logger.debug(f"{len(self.tasks)} Tasks found.")
+        if shared_dict:
+            self.SharedDict = shared_dict
 
     def update_tasks(self):
         """Update the status of all tasks."""

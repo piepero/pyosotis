@@ -8,7 +8,11 @@ from pyosotis.runner import Runner
 logging.basicConfig(filename=__name__ + ".log", level=logging.DEBUG)
 
 if __name__ == "__main__":
-    my_runner = Runner(sample_tasks)
+    # provide custom shared dictionary that is passed on to the automatic functions
+    MySharedDict = {"username": "Ada Lovelace"}
+
+    # create the task runner object
+    my_runner = Runner(task_module=sample_tasks, shared_dict=MySharedDict)
 
     tk_root = tk.Tk()
     app = PyosotisGui(tk_root=tk_root, runner=my_runner)
