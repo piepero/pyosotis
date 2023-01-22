@@ -1,10 +1,9 @@
 """Dummy functions used by sample_tasks.py"""
 
-import logging
 import random
 import time
 
-logger = logging.getLogger(__name__)
+from loguru import logger
 
 # key constants for the shared dictionary
 PROJECT_NAME = "project_name"

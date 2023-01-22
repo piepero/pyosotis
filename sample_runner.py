@@ -1,11 +1,12 @@
-import logging
 import tkinter as tk
+
+from loguru import logger
 
 import sample_tasks
 from pyosotis.gui import PyosotisGui
 from pyosotis.runner import Runner
 
-logging.basicConfig(filename=__name__ + ".log", level=logging.DEBUG)
+logger.add(".sample_runner.log")
 
 if __name__ == "__main__":
     # provide custom shared dictionary that is passed on to the automatic functions

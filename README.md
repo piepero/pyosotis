@@ -57,26 +57,26 @@ For working examples, see _```sample_tasks.py```_.
 A fully featured task could look something like this:
 ```python
 def task_do_something():
-    return {
-        "title": "This is the title of the task",
-        "description": "This is a longer description of the task.\nIt can contain mutltiple lines.",
-        "requires": [task_one, task_two],
-        "run": some_python_function,
+    return Task(
+        title="This is the title of the task",
+        description="This is a longer description of the task.\nIt can contain mutltiple lines.",
+        requires_func=[task_one, task_two],
+        run=some_python_function,
     }
 ```
 
 Tasks are defined as functions.  
-The function name doubles as unique task ID. If other tasks refer to the task (for example by referencing it in ```"requires"```), they have to use the full function name __task_do_something__.
+The function name doubles as unique task ID. If other tasks refer to the task (for example by referencing it in ```"requires_func"```), they have to use the full function name __task_do_something__.
 
-The function returns a dictionary describing the task and its behaviour.
+The function returns a Task item.
 
-```"title"``` is the only required key. This is the titel by which the task is represented in the GUI. The title should describe in one line what the task does.
+```"title"``` is the only required argument. This is the titel by which the task is represented in the GUI. The title should describe in one line what the task does.
 
-```"description"``` is optional. Use this key to store a longer description of the task. For manual tasks, the description could provide info on the necessary steps to complete the task. The description can contain line breaks.
+```"description"``` is optional. Use this argument to store a longer description of the task. For manual tasks, the description could provide info on the necessary steps to complete the task. The description can contain line breaks.
 
-```"requires"``` is optional. This is the most important key for Pyosotis' functionality. If a task has a list of other required tasks, it will only become due, when all tasks in "requires" have been previously completed. In this example, __task_do_something__ will not be considered _due_, unless __task_one__ and __task_two__ have been completed.
+```"requires_func"``` is optional. This is the most important parameter for Pyosotis' functionality. If a task has a list of other required tasks, it will only become due, when all tasks in "requires_func" have been previously completed. In this example, __task_do_something__ will not be considered _due_, unless __task_one__ and __task_two__ have been completed.
 
-```"run"``` is optional, as well. It marks an automatic task. The value of run has to be a python function. For details, see "using functions" below. The pyosotis task runner will automatically start this function in a thread. See "Using functions" below for more details.
+```"run"``` is optional, as well. It marks an automatic task. The value of run has to be a callable function. For details, see "using functions" below. The pyosotis task runner will automatically start this function in a thread. See "Using functions" below for more details.
 
 ### Using functions
 
@@ -94,13 +94,12 @@ def create_file_in_workdir(SharedDict: dict):
     SharedDict['my_filename'] = temp_path
 ```
 
-The functions called by the task's "run" key are simple Python functions with a single parameter, which is a dictionary passed to each function by the task runner.
+The functions called by the task's "run" parameter are simple Python functions with a single parameter, which is a dictionary passed to each function by the task runner.
 
 The functions use this dictionary to access and also to return data. Since the task functions run in threads, race conditions and similar inconveniences may occur! However, this is not expected to be much of a problem in practice, since Pyosotis is mainly intended for fairly linear processes in which later tasks mostly only read data provided by earlier tasks and add their own keys to the dictionary.
 ## Future enhancements
 ### Planned enhancements
 
-- [ ] show currently running automatic tasks in GUI
 - [ ] show a message when all tasks are complete
 - [ ] GUI: render task desription as markdown (see [[markdown]](https://pypi.org/project/Markdown/)[[css]](https://markdowncss.github.io/))
 - [ ] Use a nice tkinter theme [[Reddit]](https://www.reddit.com/r/Python/comments/lps11c/how_to_make_tkinter_look_modern_how_to_use_themes/)
@@ -113,4 +112,4 @@ Ideas for optional improvements.
 - [ ] change value of "run" to be a list/tuple/set of multiple functions instead of just one.
 - [ ] allow tasks to pass arguments to the function (or functions) called in "run".
 - [ ] provide a locking mechanism for SharedDict. Currently, only atomic operations are thread safe. Possibly the ThreadSafeDict from [this stackoverflow thread](https://stackoverflow.com/questions/1312331/using-a-global-dictionary-with-threads-in-python).
-- [ ] visualize the task structure with [schemdraw](https://SchemDraw.readthedocs.io/en/latest/)
+- [ ] visualize the task structure

@@ -1,15 +1,14 @@
-import logging
 import tkinter as tk
 from collections import namedtuple
 from tkinter import Listbox, StringVar, ttk
+
+from loguru import logger
 
 from .runner import Runner
 
 TaskBlock = namedtuple(
     "TaskBlock", ["labelframe", "button", "listbox", "listbox_choices"]
 )
-
-logger = logging.getLogger(__name__)
 
 close_requested = False
 
@@ -89,16 +88,22 @@ class PyosotisGui:
         global close_requested
         if close_requested:
             self.tk_root.destroy()
-            exit
+            return
         self.runner.update_tasks()
-        self.tb_due.listbox_choices.set(self.runner.due_task_titles())
-        self.tb_running.listbox_choices.set(self.runner.running_task_titles())
-        self.tb_waiting.listbox_choices.set(self.runner.waiting_task_titles())
-        self.tb_finished.listbox_choices.set(self.runner.finished_task_titles())
+        self.tb_due.listbox_choices.set([t.title for t in self.runner.due_tasks])
+        self.tb_running.listbox_choices.set(
+            [t.title for t in self.runner.running_tasks]
+        )
+        self.tb_waiting.listbox_choices.set(
+            [t.title for t in self.runner.waiting_tasks]
+        )
+        self.tb_finished.listbox_choices.set(
+            [t.title for t in self.runner.finished_tasks]
+        )
         self.tk_root.after(1000, self.update_gui)
 
     def btn_due_done(self, *args):
         for i in self.tb_due.listbox.curselection():
-            self.runner.finish_due_task(due_task_index=i)
+            self.runner.finish_due_task(i)
             self.tx_messages.insert(tk.END, f"finished task {i}\n")
         self.update_gui()
