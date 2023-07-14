@@ -18,3 +18,5 @@ if __name__ == "__main__":
     tk_root = tk.Tk()
     app = PyosotisGui(tk_root=tk_root, runner=my_runner)
     tk_root.mainloop()
+
+    logger.info(MySharedDict)
