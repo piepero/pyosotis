@@ -1,7 +1,9 @@
 """
   sample_tasks.py
 
-  A sample work process with both automatic and manual tasks.
+  A sample work process with both (simulated) automatic and manual tasks.
+
+  Use sample_runner.py to run the tasks.
 """
 
 from pyosotis import Task
@@ -33,7 +35,10 @@ def task_clone_main():
 def task_set_version():
     return Task(
         title="set release version in source",
-        description="Manually update the code in the main repositories to reflect the new release version.",
+        description=(
+            "Manually update the code in the main repositories "
+            "to reflect the new release version."
+        ),
         requires_func=[task_clone_main],
     )
 
@@ -75,7 +80,10 @@ def task_push():
 def task_mark_old():
     return Task(
         title="mark old releases as obsolete",
-        description="Manually deactivate the downloads of old releases and mark them as obsolete.",
+        description=(
+            "Manually deactivate the downloads of old releases "
+            "and mark them as obsolete."
+        ),
         requires_func=[task_upload],
     )
 
@@ -83,6 +91,9 @@ def task_mark_old():
 def task_send_notifications():
     return Task(
         title="send notifications about new release",
-        description="Manually send a bunch of notifications about the new release (E-Mail, Mastodon, WhatsApp, ...).",
+        description=(
+            "Manually send a bunch of notifications about the new "
+            "release (E-Mail, Mastodon, WhatsApp, ...)."
+        ),
         requires_func=[task_mark_old],
     )
