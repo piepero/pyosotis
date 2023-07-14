@@ -3,7 +3,6 @@ from collections.abc import Iterable
 from types import ModuleType
 from typing import Callable
 
-from loguru import logger
 from pydot import Dot, Edge
 
 from .task import Task
@@ -62,7 +61,7 @@ class Group:
 
     def remove_tasks(self, tasks: Iterable[Task]) -> None:
         """Remove the task from the group."""
-        self.tasks = [t for t in self.tasks if not t in tasks]
+        self.tasks = [t for t in self.tasks if t not in tasks]
 
     def has_task(self, task_id: str) -> bool:
         """Test if the Group contains a task with the specified id."""
@@ -71,6 +70,10 @@ class Group:
     @property
     def ids(self) -> list[str]:
         return [t.id for t in self.tasks]
+
+    @property
+    def titles(self) -> list[str]:
+        return [t.title for t in self.tasks]
 
     @property
     def dot(self) -> Dot:
