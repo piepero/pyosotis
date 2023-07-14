@@ -150,8 +150,10 @@ class PyosotisGui:
 
     def btn_due_done(self, *args):
         for i in self.tb_due.listbox.curselection():
+            task_id = self.runner.due_tasks.tasks[i].id
             self.runner.finish_due_task(i)
-            logger.info(f"task {i} manually marked as done")
+            logger.info(f"task '{task_id}' manually marked as done")
+        self.tx_description.delete("1.0", tk.END)
         self.update_gui()
 
     def due_task_selected(self, event):
