@@ -1,3 +1,4 @@
+from concurrent.futures import Future, ThreadPoolExecutor
 from threading import Thread
 from types import ModuleType
 from typing import Optional
@@ -14,9 +15,11 @@ class Runner:
     running_tasks: Group
     finished_tasks: Group
 
+    pool: ThreadPoolExecutor
+
     SharedDict: Optional[dict] = dict()
 
-    task_threads: dict[Task, Thread] = dict()
+    task_futures: dict[Task, Future] = dict()
 
     def __init__(self, task_module: ModuleType, shared_dict: Optional[dict] = None):
         logger.debug("Runner(task_module.__name__):")
@@ -27,23 +30,31 @@ class Runner:
         self.running_tasks = Group()
         self.finished_tasks = Group()
 
+        self.pool = ThreadPoolExecutor(5)
+
         self.waiting_tasks.add_tasks_from_module(task_module)
         if shared_dict:
             self.SharedDict = shared_dict
+            self.SharedDict["results"] = dict()  # a dict to collect results
 
     def update_tasks(self):
         """Update the status of all tasks."""
 
         # check the threads of running_tasks for completions
-        remove_from_task_threads = list()
-        for task in self.task_threads:
-            if not self.task_threads[task].is_alive():
+        remove_from_task_futures = list()
+        for task in self.task_futures:
+            if self.task_futures[task].done():
                 logger.debug(f"Thread of task '{task.id}' has finished.")
                 self.finished_tasks.add_task(task)
                 self.running_tasks.remove_task(task)
-                remove_from_task_threads.append(task)
-        for task in remove_from_task_threads:
-            self.task_threads.pop(task)
+                if self.SharedDict:
+                    self.SharedDict["results"][task.id] = self.task_futures[
+                        task
+                    ].result()
+                remove_from_task_futures.append(task)
+
+        for task in remove_from_task_futures:
+            self.task_futures.pop(task)
 
         # move tasks from waiting to due, if their requirements are met
         newly_due_tasks = [
@@ -58,8 +69,8 @@ class Runner:
         # and move the tasks to running_tasks
         for task in [task for task in self.due_tasks if task.run]:
             logger.debug(f"Starting thread for task '{task.id}'.")
-            self.task_threads[task] = Thread(target=task.run, args=(self.SharedDict,))
-            self.task_threads[task].start()
+            assert task.run  # to satisfy the type checker for the next line
+            self.task_futures[task] = self.pool.submit(task.run, task, self.SharedDict)
             self.running_tasks.add_task(task)
             self.due_tasks.remove_task(task)
 
