@@ -1,17 +1,14 @@
-import time
 from threading import Thread
 from types import ModuleType
 from typing import Optional
 
 from loguru import logger
-from pydot import Dot, Edge, Node
 
 from .group import Group
 from .task import Task
 
 
 class Runner:
-
     waiting_tasks: Group
     due_tasks: Group
     running_tasks: Group
@@ -54,10 +51,11 @@ class Runner:
             for wt in self.waiting_tasks
             if set(wt.requires).issubset(set(self.finished_tasks))
         ]
-        self.waiting_tasks.remove_tasks(newly_due_tasks)
+        self.waiting_tasks.remove_tasks(tasks=newly_due_tasks)
         self.due_tasks.add_tasks(newly_due_tasks)
 
-        # start threads for all due_tasks with a run command and move the tasks to running_tasks
+        # start threads for all due_tasks with a run command
+        # and move the tasks to running_tasks
         for task in [task for task in self.due_tasks if task.run]:
             logger.debug(f"Starting thread for task '{task.id}'.")
             self.task_threads[task] = Thread(target=task.run, args=(self.SharedDict,))
